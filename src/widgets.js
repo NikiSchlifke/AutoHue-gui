@@ -29,16 +29,16 @@ function SetPointConstructor(time, brightness, temperature, days) {
 
     this.makeDaySelector = function (hasFullWeek) {
         var dayGroups = {
-            workDays: { class: "btn-info", days: ["Mon", "Tue", "Wed", "Thu", "Fri"] },
-            freeDays: { class: "btn-primary", days: ["Sat", "Sun"] }
+            workDays: { class: "btn-primary", days: ["Mon", "Tue", "Wed", "Thu", "Fri"] },
+            freeDays: { class: "btn-success", days: ["Sat", "Sun"] }
         };
         // initialize Button Group
-        var group = $("<div class='btn-group'>");
-
+        var group = $("<div class='btn-group' data-toggle='buttons'>");
+        var dayGroup;
         if (typeof hasFullWeek === "undefined" || hasFullWeek) {
 
-            for (var dayGroup in dayGroups) {
-                // add Days
+            // add Days
+            for (dayGroup in dayGroups) {
                 dayGroups[dayGroup].days.map(function (dayName) {
                     var label = $("<label class='btn'>").addClass(dayGroups[dayGroup].class);
                         self.isDaySet(dayName) && label.addClass("active");
@@ -46,13 +46,14 @@ function SetPointConstructor(time, brightness, temperature, days) {
                         .click(function () {
                             self.toggleDay(dayName);
                         });
-                    group.append(label.append(checkbox).text(dayName));
+                    // append a label containing a checkbox
+                    group.append(label.append(checkbox).append(dayName));
                 });
 
             }
         } else {
             // add dayGroups
-            for (var dayGroup in dayGroups) {
+            for (dayGroup in dayGroups) {
                 $("<div class='btn'>").addClass(dayGroups[dayGroup].class).text(dayGroup).appendTo(group)
                     .click(function () {
                         self.toggleGroup(dayGroup);
